@@ -1,6 +1,6 @@
 ﻿using SharpSenz;
 
-namespace NSeszClient
+namespace SharpSeszClient
 {
     [SignalsSource]
     public partial class Client

@@ -36,7 +36,7 @@ namespace SharpSenz.SourceGenerators
                 string classSignalsReceptorMultiplexSource = GenerateClassSignalsReceptorMultiplexSource(semanticModel, classNamespace, classDeclaration);
                 context.AddSource(classSignalsReceptorMultiplexFileName, classSignalsReceptorMultiplexSource);
 
-                string classIContextSignalsReceptorFileName = $"I{GetIClassSignalsReceptorName(classDeclaration)}.g.cs";
+                string classIContextSignalsReceptorFileName = $"{GetIClassSignalsReceptorName(classDeclaration)}.g.cs";
                 string classIContextSignalsReceptorSource = GenerateISignalsReceptorSource(semanticModel, classNamespace, classDeclaration);
                 context.AddSource(classIContextSignalsReceptorFileName, classIContextSignalsReceptorSource);
             }
@@ -51,7 +51,7 @@ namespace SharpSenz.SourceGenerators
                 SyntaxNode syntaxRoot = syntaxTree.GetRoot(cancellationToken);
                 foreach (ClassDeclarationSyntax classDeclaration in syntaxRoot.DescendantNodes().OfType<ClassDeclarationSyntax>())
                 {
-                    if (!string.IsNullOrEmpty(Analyzer.FindSignalsMultiplexFieldName(classDeclaration)))
+                    if (Analyzer.IsClassASignalsSource(semanticModel, classDeclaration))
                     {
                         classDeclarations.Add(classDeclaration);
                     }
