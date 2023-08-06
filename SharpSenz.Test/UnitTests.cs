@@ -222,7 +222,72 @@ namespace SharpSenz.Test
         }
 
         [TestMethod]
-        public async Task SignalsSourceHasSignalsMultiplexButSignalsMemberCallIsMissing_FixCode_TheCodeIsFixed()
+        public async Task SignalsSourceHasSignalsMultiplexButSignalsMemberCallIsMissingAtTheBeginningOfTheMethodOnCommentLine_FixCode_TheCodeIsFixed()
+        {
+            var test = @"
+    using System;
+    using SharpSenz;
+
+    namespace ConsoleApplication1
+    {
+        [SignalsSource]
+        public partial class Signaller
+        {
+            public partial class SignalsMultiplex
+            {
+                public void Method_SomeSignal() { }
+            }
+
+            public readonly SignalsMultiplex signals = new SignalsMultiplex();
+
+            public void Method()
+            {
+                // SIG: Some Signal
+
+                int a = 10;
+                int b = a + 5;
+            }
+        }
+    }
+";
+
+            var fixtest = @"
+    using System;
+    using SharpSenz;
+
+    namespace ConsoleApplication1
+    {
+        [SignalsSource]
+        public partial class Signaller
+        {
+            public partial class SignalsMultiplex
+            {
+                public void Method_SomeSignal() { }
+            }
+
+            public readonly SignalsMultiplex signals = new SignalsMultiplex();
+
+            public void Method()
+            {
+                // SIG: Some Signal
+                signals.Method_SomeSignal();
+
+                int a = 10;
+                int b = a + 5;
+            }
+        }
+    }
+";
+
+            await GetCodeFix(test,
+                             fixtest,
+                             0,
+                             new DiagnosticResult(Analyzer.MissingSignalsCall).WithSpan(19, 17, 19, 36).WithArguments("Some Signal")
+                             ).RunAsync();
+        }
+
+        [TestMethod]
+        public async Task SignalsSourceHasSignalsMultiplexButSignalsMemberCallIsMissingInTheMiddleOfTheMethodOneCommentLine_FixCode_TheCodeIsFixed()
         {
             var test = @"
     using System;
@@ -285,6 +350,217 @@ namespace SharpSenz.Test
                              fixtest,
                              0,
                              new DiagnosticResult(Analyzer.MissingSignalsCall).WithSpan(21, 17, 21, 36).WithArguments("Some Signal")
+                             ).RunAsync();
+        }
+
+        [TestMethod]
+        public async Task SignalsSourceHasSignalsMultiplexButSignalsMemberCallIsMissingInTheMiddleOfTheMethodMultipleCommentLines_FixCode_TheCodeIsFixed()
+        {
+            var test = @"
+    using System;
+    using SharpSenz;
+
+    namespace ConsoleApplication1
+    {
+        [SignalsSource]
+        public partial class Signaller
+        {
+            public partial class SignalsMultiplex
+            {
+                public void Method_SomeSignal() { }
+            }
+
+            public readonly SignalsMultiplex signals = new SignalsMultiplex();
+
+            public void Method()
+            {
+                int a = 10;
+
+                // Some comment before
+                // SIG: Some Signal
+
+                // Some comment after
+
+                int b = a + 5;
+            }
+        }
+    }
+";
+
+            var fixtest = @"
+    using System;
+    using SharpSenz;
+
+    namespace ConsoleApplication1
+    {
+        [SignalsSource]
+        public partial class Signaller
+        {
+            public partial class SignalsMultiplex
+            {
+                public void Method_SomeSignal() { }
+            }
+
+            public readonly SignalsMultiplex signals = new SignalsMultiplex();
+
+            public void Method()
+            {
+                int a = 10;
+
+                // Some comment before
+                // SIG: Some Signal
+                signals.Method_SomeSignal();
+
+                // Some comment after
+
+                int b = a + 5;
+            }
+        }
+    }
+";
+
+            await GetCodeFix(test,
+                             fixtest,
+                             0,
+                             new DiagnosticResult(Analyzer.MissingSignalsCall).WithSpan(22, 17, 22, 36).WithArguments("Some Signal")
+                             ).RunAsync();
+        }
+
+        [TestMethod]
+        public async Task SignalsSourceHasSignalsMultiplexButSignalsMemberCallIsMissingAtTheEndOfTheMethodOneCommentLine_FixCode_TheCodeIsFixed()
+        {
+            var test = @"
+    using System;
+    using SharpSenz;
+
+    namespace ConsoleApplication1
+    {
+        [SignalsSource]
+        public partial class Signaller
+        {
+            public partial class SignalsMultiplex
+            {
+                public void Method_SomeSignal() { }
+            }
+
+            public readonly SignalsMultiplex signals = new SignalsMultiplex();
+
+            public void Method()
+            {
+                int a = 10;
+                int b = a + 5;
+
+                // SIG: Some Signal
+            }
+        }
+    }
+";
+
+            var fixtest = @"
+    using System;
+    using SharpSenz;
+
+    namespace ConsoleApplication1
+    {
+        [SignalsSource]
+        public partial class Signaller
+        {
+            public partial class SignalsMultiplex
+            {
+                public void Method_SomeSignal() { }
+            }
+
+            public readonly SignalsMultiplex signals = new SignalsMultiplex();
+
+            public void Method()
+            {
+                int a = 10;
+                int b = a + 5;
+
+                // SIG: Some Signal
+                signals.Method_SomeSignal();
+            }
+        }
+    }
+";
+
+            await GetCodeFix(test,
+                             fixtest,
+                             0,
+                             new DiagnosticResult(Analyzer.MissingSignalsCall).WithSpan(22, 17, 22, 36).WithArguments("Some Signal")
+                             ).RunAsync();
+        }
+
+        [TestMethod]
+        public async Task SignalsSourceHasSignalsMultiplexButSignalsMemberCallIsMissingAtTheEndOfTheMethodMultipleCommentLines_FixCode_TheCodeIsFixed()
+        {
+            var test = @"
+    using System;
+    using SharpSenz;
+
+    namespace ConsoleApplication1
+    {
+        [SignalsSource]
+        public partial class Signaller
+        {
+            public partial class SignalsMultiplex
+            {
+                public void Method_SomeSignal() { }
+            }
+
+            public readonly SignalsMultiplex signals = new SignalsMultiplex();
+
+            public void Method()
+            {
+                int a = 10;
+                int b = a + 5;
+
+                // Some comment before
+                // SIG: Some Signal
+
+                // Some Comment after
+
+            }
+        }
+    }
+";
+
+            var fixtest = @"
+    using System;
+    using SharpSenz;
+
+    namespace ConsoleApplication1
+    {
+        [SignalsSource]
+        public partial class Signaller
+        {
+            public partial class SignalsMultiplex
+            {
+                public void Method_SomeSignal() { }
+            }
+
+            public readonly SignalsMultiplex signals = new SignalsMultiplex();
+
+            public void Method()
+            {
+                int a = 10;
+                int b = a + 5;
+
+                // Some comment before
+                // SIG: Some Signal
+                signals.Method_SomeSignal();
+
+                // Some Comment after
+
+            }
+        }
+    }
+";
+
+            await GetCodeFix(test,
+                             fixtest,
+                             0,
+                             new DiagnosticResult(Analyzer.MissingSignalsCall).WithSpan(23, 17, 23, 36).WithArguments("Some Signal")
                              ).RunAsync();
         }
 

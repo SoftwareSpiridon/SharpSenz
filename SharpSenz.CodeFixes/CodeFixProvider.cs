@@ -134,16 +134,35 @@ namespace SharpSenz.CodeFixes
             CompilationUnitSyntax compilationUnit = SyntaxFactory.ParseCompilationUnit($"{signalLeadingWhitespace}{signalsFieldName}.{methodName}();\r\n");
             StatementSyntax signalsMemberInvocationDeclaration = compilationUnit.DescendantNodes().OfType<StatementSyntax>().FirstOrDefault();
 
-            StatementSyntax oldStatement = signalTrivia.Token.Parent.AncestorsAndSelf().OfType<StatementSyntax>().FirstOrDefault();
-            Tuple<SyntaxTriviaList, SyntaxTriviaList> triviaSplit = SplitTrivia(oldStatement, signalTrivia);
             BlockSyntax oldBlock = signalTrivia.Token.Parent.AncestorsAndSelf().OfType<BlockSyntax>().FirstOrDefault();
+            BlockSyntax newBlock = oldBlock;
 
-            signalsMemberInvocationDeclaration = signalsMemberInvocationDeclaration.WithLeadingTrivia(triviaSplit.Item1.Add(leadingWhitespaceTrivia));
+            StatementSyntax oldStatement = signalTrivia.Token.Parent.AncestorsAndSelf().OfType<StatementSyntax>().FirstOrDefault();
+            if (oldStatement is BlockSyntax)
+            {
+                // comments in the last line of the method
+                SyntaxToken closeBraceToken = oldStatement.GetLastToken();
+                SyntaxTriviaList syntaxTriviaList = closeBraceToken.LeadingTrivia;
+                Tuple<SyntaxTriviaList, SyntaxTriviaList> triviaSplit = SplitTrivia(syntaxTriviaList, signalTrivia);
 
-            int oldStatementIndex = Enumerable.Range(0, oldBlock.Statements.Count).Where(index => oldBlock.Statements[index] == oldStatement).First();
+                signalsMemberInvocationDeclaration = signalsMemberInvocationDeclaration.WithLeadingTrivia(triviaSplit.Item1.Add(leadingWhitespaceTrivia));
 
-            BlockSyntax newBlock = oldBlock.ReplaceNode(oldStatement, oldStatement.WithLeadingTrivia(triviaSplit.Item2));
-            newBlock = newBlock.WithStatements(newBlock.Statements.Insert(oldStatementIndex, signalsMemberInvocationDeclaration));
+                newBlock = oldBlock.ReplaceToken(closeBraceToken, closeBraceToken.WithLeadingTrivia(triviaSplit.Item2));
+                newBlock = newBlock.WithStatements(newBlock.Statements.Add(signalsMemberInvocationDeclaration));
+            }
+            else
+            {
+                // comments on some line in the middle of the method
+                SyntaxTriviaList syntaxTriviaList = oldStatement.GetLeadingTrivia();
+                Tuple<SyntaxTriviaList, SyntaxTriviaList> triviaSplit = SplitTrivia(syntaxTriviaList, signalTrivia);
+
+                signalsMemberInvocationDeclaration = signalsMemberInvocationDeclaration.WithLeadingTrivia(triviaSplit.Item1.Add(leadingWhitespaceTrivia));
+
+                int oldStatementIndex = Enumerable.Range(0, oldBlock.Statements.Count).Where(index => oldBlock.Statements[index] == oldStatement).First();
+
+                newBlock = oldBlock.ReplaceNode(oldStatement, oldStatement.WithLeadingTrivia(triviaSplit.Item2));
+                newBlock = newBlock.WithStatements(newBlock.Statements.Insert(oldStatementIndex, signalsMemberInvocationDeclaration));
+            }
 
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             SyntaxNode newRoot = oldRoot.ReplaceNode(oldBlock, newBlock);
@@ -151,9 +170,8 @@ namespace SharpSenz.CodeFixes
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static Tuple<SyntaxTriviaList, SyntaxTriviaList> SplitTrivia(StatementSyntax oldStatement, SyntaxTrivia signalTrivia)
+        private static Tuple<SyntaxTriviaList, SyntaxTriviaList> SplitTrivia(SyntaxTriviaList oldTrivia, SyntaxTrivia signalTrivia)
         {
-            SyntaxTriviaList oldTrivia = oldStatement.GetLeadingTrivia();
             int signalTriviaIndex = Enumerable.Range(0, oldTrivia.Count).Where(index => oldTrivia[index] == signalTrivia).First();
             return Tuple.Create(new SyntaxTriviaList(oldTrivia.Take(signalTriviaIndex + 2)), new SyntaxTriviaList(oldTrivia.Skip(signalTriviaIndex + 2)));
         }
