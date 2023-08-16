@@ -5,7 +5,9 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hyperspace", "HyperDrive\Hyperspace.csproj", "{5C260236-6ADA-4ED0-A351-501DDA5AADC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spaceship", "Spaceship\Spaceship.csproj", "{B16A3675-E459-4E91-B208-B3F082E8A750}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spaceship", "Spaceship\Spaceship.csproj", "{B16A3675-E459-4E91-B208-B3F082E8A750}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hyperspace.Tests", "Hyperspace.Tests\Hyperspace.Tests.csproj", "{7761C7E1-6D51-41B5-92A3-53CF7B4671CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B16A3675-E459-4E91-B208-B3F082E8A750}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B16A3675-E459-4E91-B208-B3F082E8A750}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B16A3675-E459-4E91-B208-B3F082E8A750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7761C7E1-6D51-41B5-92A3-53CF7B4671CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7761C7E1-6D51-41B5-92A3-53CF7B4671CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7761C7E1-6D51-41B5-92A3-53CF7B4671CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7761C7E1-6D51-41B5-92A3-53CF7B4671CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

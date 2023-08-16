@@ -18,18 +18,22 @@ namespace Hyperspace
         public void JumpThroughHyperspace(Tuple<double, double, double> destination)
         {
             //SIG: Starting Hyperjump
+            signals.JumpThroughHyperspace_StartingHyperjump(destination);
 
             HyperspaceRoute route = _hyperspaceNavigation.CalculateHyperspaceRoute(destination);
 
             //SIG: Preparing Hyperdrive
+            signals.JumpThroughHyperspace_PreparingHyperdrive(route);
 
             PrepareHyperspaceJump(route);
 
             //SIG: Jumping
+            signals.JumpThroughHyperspace_Jumping(route);
 
             PerformHyperspaceJump(route);
 
             //SIG: Hyperjump is completed
+            signals.JumpThroughHyperspace_HyperjumpIsCompleted(route, _hyperspaceNavigation);
         }
 
         private void PrepareHyperspaceJump(HyperspaceRoute route)
