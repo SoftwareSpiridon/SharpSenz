@@ -9,21 +9,22 @@
             _hyperspaceNavigation = hyperspaceNavigation;
         }
 
-        public void JumpThroughHyperspace(Tuple<double, double, double> start, Tuple<double, double, double> destination)
+        public void JumpThroughHyperspace(Tuple<double, double, double> destination)
         {
-            HyperspaceRoute route = _hyperspaceNavigation.CalculateHyperspaceRoute(start, destination);
+            HyperspaceRoute route = _hyperspaceNavigation.CalculateHyperspaceRoute(destination);
 
             PrepareHyperspaceJump(route);
 
-            PerformHyperspaceJump();
+            PerformHyperspaceJump(route);
         }
 
         private void PrepareHyperspaceJump(HyperspaceRoute route)
         {
         }
 
-        private void PerformHyperspaceJump()
+        private void PerformHyperspaceJump(HyperspaceRoute route)
         {
+            _hyperspaceNavigation.CurrentLocation = route.Destination;
         }
     }
 }
