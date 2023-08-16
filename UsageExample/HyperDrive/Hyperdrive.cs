@@ -1,7 +1,13 @@
-﻿namespace Hyperspace
+﻿using SharpSenz;
+
+namespace Hyperspace
 {
-    public class Hyperdrive
+    [SignalsSource]
+    public partial class Hyperdrive
     {
+        public partial class SignalsMultiplex { }
+        public readonly SignalsMultiplex signals = new SignalsMultiplex();
+
         private readonly HyperspaceNavigation _hyperspaceNavigation;
 
         public Hyperdrive(HyperspaceNavigation hyperspaceNavigation)
@@ -11,11 +17,19 @@
 
         public void JumpThroughHyperspace(Tuple<double, double, double> destination)
         {
+            //SIG: Starting Hyperjump
+
             HyperspaceRoute route = _hyperspaceNavigation.CalculateHyperspaceRoute(destination);
+
+            //SIG: Preparing Hyperdrive
 
             PrepareHyperspaceJump(route);
 
+            //SIG: Jumping
+
             PerformHyperspaceJump(route);
+
+            //SIG: Hyperjump is completed
         }
 
         private void PrepareHyperspaceJump(HyperspaceRoute route)
