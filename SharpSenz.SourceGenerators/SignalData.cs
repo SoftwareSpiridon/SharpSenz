@@ -10,7 +10,7 @@ namespace SharpSenz.SourceGenerators
                           int callerFileLine,
                           string callerClassName,
                           string callerMethodName,
-                          string signalMessage,
+                          string signalString,
                           string signalMethodName,
                           string argumentsDefinitions,
                           string argumentsToCall)
@@ -19,7 +19,7 @@ namespace SharpSenz.SourceGenerators
             CallerFileLine = callerFileLine;
             CallerClassName = callerClassName;
             CallerMethodName = callerMethodName;
-            SignalMessage = signalMessage;
+            SignalString = signalString;
             SignalMethodName = signalMethodName;
             ArgumentsDefinitions = argumentsDefinitions;
             ArgumentsToCall = argumentsToCall;
@@ -29,7 +29,7 @@ namespace SharpSenz.SourceGenerators
         public int CallerFileLine { get; private set; }
         public string CallerClassName { get; private set; }
         public string CallerMethodName { get; private set; }
-        public string SignalMessage { get; private set; }
+        public string SignalString { get; private set; }
         public string SignalMethodName { get; private set; }
         public string ArgumentsDefinitions { get; private set; }
         public string ArgumentsToCall { get; private set; }
@@ -41,7 +41,7 @@ namespace SharpSenz.SourceGenerators
                    CallerFileLine == data.CallerFileLine &&
                    CallerClassName == data.CallerClassName &&
                    CallerMethodName == data.CallerMethodName &&
-                   SignalMessage == data.SignalMessage &&
+                   SignalString == data.SignalString &&
                    SignalMethodName == data.SignalMethodName &&
                    ArgumentsDefinitions == data.ArgumentsDefinitions &&
                    ArgumentsToCall == data.ArgumentsToCall;
@@ -54,7 +54,7 @@ namespace SharpSenz.SourceGenerators
             hashCode = hashCode * -1521134295 + CallerFileLine.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CallerClassName);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CallerMethodName);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(SignalMessage);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(SignalString);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(SignalMethodName);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ArgumentsDefinitions);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ArgumentsToCall);

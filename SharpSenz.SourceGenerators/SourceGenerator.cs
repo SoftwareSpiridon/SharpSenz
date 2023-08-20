@@ -192,7 +192,7 @@ namespace {classNamespace}
                 _signalContext.FileLine = {methodData.CallerFileLine};
                 _signalContext.ClassName = @""{methodData.CallerClassName}"";
                 _signalContext.MethodName = @""{methodData.CallerMethodName}"";
-                _signalContext.Message = @""{methodData.SignalMessage}"";
+                _signalContext.Signal = @""{methodData.SignalString}"";
 
                 foreach (ISignalsReceptor receptor in Receptors)
                 {{
@@ -239,7 +239,7 @@ namespace {classNamespace}
                         continue;
                     }
 
-                    string signalMessage = "";
+                    string signalString = "";
                     if (invocationExpressionSyntax.HasLeadingTrivia)
                     {
                         foreach (SyntaxTrivia singleLineComment in invocationExpressionSyntax.GetLeadingTrivia().Where(x => x.IsKind(SyntaxKind.SingleLineCommentTrivia)))
@@ -247,7 +247,7 @@ namespace {classNamespace}
                             Match signalMatch = Analyzer.SignalRegex.Match(singleLineComment.ToFullString());
                             if (signalMatch.Success)
                             {
-                                signalMessage = signalMatch.Groups["Message"].Value;
+                                signalString = signalMatch.Groups["Signal"].Value;
                             }
                         }
                     }
@@ -276,7 +276,7 @@ namespace {classNamespace}
                                                    callerFileLine: invocationExpressionSyntax.SyntaxTree.GetLineSpan(invocationExpressionSyntax.Span).StartLinePosition.Line,
                                                    callerClassName: classDeclaration.Identifier.Text,
                                                    callerMethodName: methodDeclarationSyntax.Identifier.Text,
-                                                   signalMessage: signalMessage,
+                                                   signalString: signalString,
                                                    signalMethodName: signalMethodName.Identifier.Text,
                                                    argumentsDefinitions: string.Join(", ", argumentsDefinitions),
                                                    argumentsToCall: string.Join(", ", argumentsToCall)));

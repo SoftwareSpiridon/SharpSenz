@@ -197,17 +197,17 @@ namespace SharpSenz.CodeFixes
 
         private static string GetMethodNameForSignalTrivia(SyntaxTrivia signalTrivia)
         {
-            string signalMessage = Analyzer.GetSignalMessageFromComment(signalTrivia);
+            string signalString = Analyzer.GetSignalStringFromComment(signalTrivia);
             string methodName = signalTrivia.Token.Parent.AncestorsAndSelf().OfType<MethodDeclarationSyntax>().First().Identifier.Text;
-            string signalStringForMethodName = GetSignalStringForMethodNameName(signalMessage);
+            string signalStringForMethodName = GetSignalStringForMethodNameName(signalString);
 
             return $"{methodName}_{signalStringForMethodName}";
         }
 
-        private static string GetSignalStringForMethodNameName(string signalMessage)
+        private static string GetSignalStringForMethodNameName(string signalString)
         {
             List<string> words = new List<string>();
-            foreach(string word in signalMessage.Split(' '))
+            foreach(string word in signalString.Split(' '))
             {
                 if (!string.IsNullOrWhiteSpace(word.Trim()))
                 {

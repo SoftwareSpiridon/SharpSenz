@@ -10,6 +10,6 @@ namespace SharpSenz
         public int FileLine;
         public string ClassName;
         public string MethodName;
-        public string Message;
+        public string Signal;
     }
 }

@@ -17,7 +17,7 @@ namespace SharpSenz.Analyzers
         public const string Category = "SharpSenz";
         public const string SignalsMultiplexClassName = "SignalsMultiplex";
 
-        public static readonly Regex SignalRegex = new Regex(@"SIG\s*:\s*(?<Message>[^$]+)$", RegexOptions.Singleline | RegexOptions.Compiled);
+        public static readonly Regex SignalRegex = new Regex(@"SIG\s*:\s*(?<Signal>[^$]+)$", RegexOptions.Singleline | RegexOptions.Compiled);
 
         public static readonly DiagnosticDescriptor NonPartialClass
             = new DiagnosticDescriptor(id: "SZ001",
@@ -141,10 +141,10 @@ namespace SharpSenz.Analyzers
                 foreach (Tuple<SyntaxTrivia, string> signalComment in FindSignalComments(methodDeclaration))
                 {
                     SyntaxTrivia syntaxTrivia = signalComment.Item1;
-                    string signalMessage = signalComment.Item2;
+                    string signalString = signalComment.Item2;
                     if (syntaxTrivia.Token.Text != signalsMultiplexFieldName)
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(MissingSignalsCall, Location.Create(syntaxTrivia.SyntaxTree, syntaxTrivia.Span), signalMessage));
+                        context.ReportDiagnostic(Diagnostic.Create(MissingSignalsCall, Location.Create(syntaxTrivia.SyntaxTree, syntaxTrivia.Span), signalString));
                     }
                 }
             }
@@ -211,22 +211,22 @@ namespace SharpSenz.Analyzers
         {
             foreach (SyntaxTrivia syntaxTrivia in methodDeclaration.DescendantTrivia().Where(c => c.IsKind(SyntaxKind.SingleLineCommentTrivia)))
             {
-                string signalMessage = GetSignalMessageFromComment(syntaxTrivia);
-                if (string.IsNullOrWhiteSpace(signalMessage))
+                string signalString = GetSignalStringFromComment(syntaxTrivia);
+                if (string.IsNullOrWhiteSpace(signalString))
                 {
                     continue;
                 }
 
-                yield return Tuple.Create(syntaxTrivia, signalMessage);
+                yield return Tuple.Create(syntaxTrivia, signalString);
             }
         }
 
-        public static string GetSignalMessageFromComment(SyntaxTrivia syntaxTrivia)
+        public static string GetSignalStringFromComment(SyntaxTrivia syntaxTrivia)
         {
             Match match = SignalRegex.Match(syntaxTrivia.ToFullString());
             if (match.Success)
             {
-                return match.Groups["Message"].Value;
+                return match.Groups["Signal"].Value;
             }
 
             return null;
