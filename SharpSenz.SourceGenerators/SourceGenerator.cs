@@ -165,7 +165,7 @@ namespace {classNamespace}
         {{
             private readonly SignalContext _signalContext = new SignalContext();
 
-            private readonly IList<ISignalsReceptor> Receptors = new List<ISignalsReceptor>();
+            public readonly IList<ISignalsReceptor> Receptors = new List<ISignalsReceptor>();
 
 ";
 
