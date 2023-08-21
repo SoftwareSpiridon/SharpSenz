@@ -9,6 +9,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HyperDrive\Hyperspace.csproj" />
+    <ProjectReference Include="..\Hyperspace.Logging.NLog\Hyperspace.Logging.NLogOut.csproj" />
+    <ProjectReference Include="..\Hyperspace.Logging.Trace\Hyperspace.Logging.ConsoleOut.csproj" />
+    <ProjectReference Include="..\Hyperspace.MessageBus.RabbitMQ\Hyperspace.MessageBus.RabbitMQ.csproj" />
+    <ProjectReference Include="..\Hyperspace.PerformanceCounters\Hyperspace.PerformanceCounters.csproj" />
   </ItemGroup>
 
 </Project>
