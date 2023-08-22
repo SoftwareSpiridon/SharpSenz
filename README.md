@@ -1,6 +1,6 @@
 # SharpSenz
 
-**SharpSenz** is a C# intsrumentation library for decoupling reactive code from the main application code.
+**SharpSenz** is a C# intsrumentation library for decoupling reactive code from the main application code interactively as you type your application code in.
 
 **SharpSenz enables:**
 - Abstracting logging / traces / monitoring away
