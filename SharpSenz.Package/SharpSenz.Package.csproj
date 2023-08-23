@@ -11,9 +11,10 @@
     <PackageId>SharpSenz</PackageId>
     <PackageVersion>0.1.0.0</PackageVersion>
     <Authors>Spiridon Sagirov</Authors>
-    <PackageLicenseUrl>https://github.com/SoftwareSpiridon/SharpSenz/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <!--PackageLicenseUrl>https://github.com/SoftwareSpiridon/SharpSenz/blob/master/LICENSE.txt</PackageLicenseUrl-->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/SoftwareSpiridon/SharpSenz</PackageProjectUrl>
-    <PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl>
+    <!--PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl-->
     <RepositoryUrl>https://github.com/SoftwareSpiridon/SharpSenz.git</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>SharpSenz is a C# abstract monitoring intsrumentation library. It utilizes Roslyn compiler to generate abstract interface calls as you type your code in.</Description>
@@ -51,6 +52,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="README.md"/>
+  </ItemGroup>
+  
   <Target Name="IncludeReferencedProjectInPackage">
     <ItemGroup>
       <TfmSpecificPackageFile Include="$(OutputPath)\SharpSenz.dll" PackagePath="lib/$(TargetFramework)" />
