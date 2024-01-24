@@ -122,7 +122,9 @@ namespace SharpSenz.SourceGenerators
         private static string GenerateISignalsReceptorSource(SemanticModel semanticModel, string classNamespace, ClassDeclarationSyntax classDeclaration)
         {
             string senzNamespace = GetSenzNamespace();
-            string header = $@"using {senzNamespace};
+            string header = $@"#nullable enable
+
+using {senzNamespace};
 
 namespace {classNamespace}
 {{
@@ -155,7 +157,9 @@ namespace {classNamespace}
         {
             string nSenzNamespace = GetSenzNamespace();
             string classISignalsReceptorName = GetIClassSignalsReceptorName(classDeclaration);
-            string header = $@"using {nSenzNamespace};
+            string header = $@"#nullable enable
+
+using {nSenzNamespace};
 
 namespace {classNamespace}
 {{

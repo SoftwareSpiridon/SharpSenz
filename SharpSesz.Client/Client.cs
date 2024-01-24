@@ -14,8 +14,10 @@ namespace SharpSeszClient
             int a = 10;
             int c = 25;
 
+            int? n = null;
+
             //SIG: Begin Of Calculation
-            signals.Method_BeginOfCalc(a, c);
+            signals.Method_BeginOfCalc(a, c, n);
 
             int b = a + 1;
 
