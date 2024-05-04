@@ -26,7 +26,7 @@ It also makes the unit / component testing easier by making all the reactive cod
 The below explanation looks long, but the actual work is really fast as all you need to do is to press "Alt + Enter" few times.
 
 ### 1. Example class without logging
-Take a look at this siimple project. Hyperspace is the component we will apply an instrumentation to.
+Take a look at this simple project. Hyperspace is the component we will apply an instrumentation to.
 We can think about it as one of the components of the Spaceship.
 Spaceship is the main program which calls to the Hyperdrive class of the Hyperspace project.
 Next we will apply instrumentation to the JumpThroughHyperspace method of the Hyperdrive class.
@@ -34,7 +34,7 @@ Next we will apply instrumentation to the JumpThroughHyperspace method of the Hy
 ![Hyperspace project](Assets/UsageExample/01_CleanProject.png)
 
 ### 2. Installing the SharpSenz NuGet package
-(This step is a temporary workaround for the promlem we don't know how to solve)
+(This step is a temporary workaround for the problem we don't know how to solve)
 After installing the SharpSenz NuGet Package you need to comment out two XML lines as specified in the image below.
 
 ![Hyperspace project](Assets/UsageExample/02_AddingReference.png)
@@ -94,7 +94,7 @@ After all the multiplex method calls were added the code looks like in the image
 
 ![Hyperspace project](Assets/UsageExample/11_SignalMethodsCallsAdded.png)
 
-**Wait, but it compiles!?!**
+**Hold on... it actually compiles? That's unexpected!**
 
 If you compile this code right now, it will surprisingly be compiled successfully.
 This happens thanks to the automatic roslyn code genegation of the Multiplex class.
