@@ -34,10 +34,11 @@ Next we will apply instrumentation to the JumpThroughHyperspace method of the Hy
 ![Hyperspace project](Assets/UsageExample/01_CleanProject.png)
 
 ### 2. Installing the SharpSenz NuGet package
-(This step is a temporary workaround for the problem we don't know how to solve)
-After installing the SharpSenz NuGet Package you need to comment out two XML lines as specified in the image below.
+Just install the SharpSenz NuGet Package into your project. No extra `PackageReference` edits are required.
 
 ![Hyperspace project](Assets/UsageExample/02_AddingReference.png)
+
+> Note: the screenshot above is from an earlier release and still shows the two commented-out XML lines (`PrivateAssets` / `IncludeAssets`) that used to be a required workaround. That workaround is no longer needed — a plain `<PackageReference Include="SharpSenz" Version="..." />` is enough. The image will be refreshed in a later update.
 
 Now we can begin instrumenting our code
 
